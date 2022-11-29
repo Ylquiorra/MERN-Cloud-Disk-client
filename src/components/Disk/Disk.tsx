@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button } from '@mui/material';
 
-import { getFiles } from '../../actions/file';
+import { getFiles, uploadFile } from '../../actions/file';
 import FileList from './FileList/FileList';
 import Popup from './Popup/Popup';
 import { setCurrentDir, setPopupDisplay } from '../../redux/file/slice';
@@ -24,6 +24,11 @@ const Disk: FC = () => {
     dispatch(setCurrentDir(dirStack.pop()));
   };
 
+  const fileUploadHandler = (e: any) => {
+    const files = [...e.target.files];
+    files.forEach((file) => dispatch(uploadFile(file, currentDir)));
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1, mb: 9 }}>
@@ -32,8 +37,12 @@ const Disk: FC = () => {
             Назад
           </Button>
         )}
-        <Button onClick={showPopup} variant="contained">
+        <Button onClick={showPopup} sx={{ mr: 3 }} variant="contained">
           Создать папку
+        </Button>
+        <Button color="secondary" variant="outlined" component="label">
+          Загрузить файл
+          <input multiple={true} onChange={(e) => fileUploadHandler(e)} type="file" hidden />
         </Button>
         <Popup />
       </Box>

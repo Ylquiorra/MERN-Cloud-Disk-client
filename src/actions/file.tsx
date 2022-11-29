@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Action, AnyAction, Dispatch } from 'redux';
+
+import { IFile } from '../components/Disk/FileList/FileList';
 import { setAddFile, setFiles } from '../redux/file/slice';
 
 export function getFiles(dirId: string) {
@@ -32,6 +34,24 @@ export function createDir(dirId: string, name: string) {
         },
       );
       dispatch(setAddFile(data));
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+}
+//TODO изменить тип file
+export function uploadFile(file: any, dirId: string) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      if (dirId) {
+        formData.append('parent', dirId);
+      }
+      const response = await axios.post(`http://localhost:5000/api/files/upload`, formData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      dispatch(setAddFile(response.data));
     } catch (error: any) {
       alert(error.message);
     }
