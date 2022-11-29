@@ -1,23 +1,27 @@
 import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 
 import { IFile } from '../FileList';
+import { setCurrentDir, setPushToStack } from '../../../../redux/file/slice';
+import { log } from 'console';
 
-export const File: FC<IFile> = ({
-  name,
-  type,
-  size,
-  path,
-  date,
-  user,
-  chields,
-  __v,
-  currentDir,
-}) => {
+export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __v, _id }) => {
+  const dispatch = useDispatch();
+  const currentDir = useSelector((state: any) => state.files.currentDir);
+
+  const openDirHandler = () => {
+    if (type === 'dir') {
+      dispatch(setPushToStack(currentDir));
+      dispatch(setCurrentDir(_id));
+    }
+  };
+
   return (
     <Grid
       container
+      onClick={openDirHandler}
       spacing={2}
       alignItems="center"
       sx={{ mb: 5, borderBottom: 1, borderColor: 'grey.500', cursor: 'pointer' }}>

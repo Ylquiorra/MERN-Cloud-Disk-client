@@ -12,7 +12,7 @@ export interface IFile {
   path: string;
   date: string;
   user: string;
-  chields: Array<string>;
+  childs: Array<string>;
   __v: number;
   currentDir: string | null;
 }
