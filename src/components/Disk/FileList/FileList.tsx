@@ -25,10 +25,14 @@ const FileList: FC = () => {
       <Grid container spacing={2} sx={{ mb: 6 }}>
         <Grid xs={1}></Grid>
         <Grid xs>Название</Grid>
-        <Grid  xs={1}></Grid>
         <Grid xs={1}></Grid>
-        <Grid sx={{ textAlign: 'center' }} xs={1}>Дата</Grid>
-        <Grid sx={{ textAlign: 'center' }} xs={1}>Размер</Grid>
+        <Grid xs={1}></Grid>
+        <Grid sx={{ textAlign: 'center' }} xs={1}>
+          Дата
+        </Grid>
+        <Grid sx={{ textAlign: 'center' }} xs={1}>
+          Размер
+        </Grid>
       </Grid>
       {files.map((file) => (
         <File key={file._id} {...file} />

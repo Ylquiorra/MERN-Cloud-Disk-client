@@ -20,17 +20,17 @@ export const File: FC<IFile> = ({
       container
       spacing={2}
       alignItems="center"
-      sx={{ mb: 5, borderBottom: 1, borderColor: 'grey.500' }}>
-      <Grid sx={{ textAlign: 'center' }} sm={1}>
+      sx={{ mb: 5, borderBottom: 1, borderColor: 'grey.500', cursor: 'pointer' }}>
+      <Grid sx={{ textAlign: 'center' }} xs={1}>
         <FolderIcon sx={{ height: 50, width: 50 }} />
       </Grid>
-      <Grid sm>{name}</Grid>
-      <Grid sx={{ textAlign: 'center' }} sm={1}></Grid>
-      <Grid sx={{ textAlign: 'center' }} sm={1}></Grid>
-      <Grid sx={{ textAlign: 'center' }} sm={1}>
+      <Grid xs>{name}</Grid>
+      <Grid sx={{ textAlign: 'center' }} xs={1}></Grid>
+      <Grid sx={{ textAlign: 'center' }} xs={1}></Grid>
+      <Grid sx={{ textAlign: 'center' }} xs={1}>
         {date.slice(0, 10)}
       </Grid>
-      <Grid sx={{ textAlign: 'center' }} sm={1}>
+      <Grid sx={{ textAlign: 'center' }} xs={1}>
         {size}
       </Grid>
     </Grid>

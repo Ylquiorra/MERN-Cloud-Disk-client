@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Action, Dispatch } from 'redux';
-import { setFiles } from '../redux/file/slice';
+import { Action, AnyAction, Dispatch } from 'redux';
+import { setAddFile, setFiles } from '../redux/file/slice';
 
 export function getFiles(dirId: string) {
   return async (dispatch: Dispatch<Action>) => {
@@ -11,6 +11,27 @@ export function getFiles(dirId: string) {
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } },
       );
       dispatch(setFiles(data));
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+}
+
+export function createDir(dirId: string, name: string) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      const { data } = await axios.post(
+        `http://localhost:5000/api/files`,
+        {
+          name,
+          parent: dirId,
+          type: 'dir',
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      );
+      dispatch(setAddFile(data));
     } catch (error: any) {
       alert(error.message);
     }
