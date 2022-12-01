@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import { getFiles, uploadFile } from '../../actions/file';
 import FileList, { IFile } from './FileList/FileList';
@@ -89,8 +90,9 @@ const Disk: FC = () => {
           alignItems: 'center',
         }}>
         <Typography id="modal-modal-title" variant="h4" component="h2">
-          Перетащите файлы в область
+          Перетащите файлы в область 
         </Typography>
+        <CloudUploadIcon sx={{ height: 50, width: 50 }} />
       </Box>
     </section>
   );

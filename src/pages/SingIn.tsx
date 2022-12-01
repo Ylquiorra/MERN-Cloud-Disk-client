@@ -39,11 +39,6 @@ export const SingIn: FC = () => {
     });
   };
 
-  const handleClick = () => {
-    if (isAuth) {
-      alert('eeee ЗАШЛИ');
-    }
-  };
   const handleClickLogout = () => {
     if (isAuth) {
       dispatch(setLogout());
@@ -102,22 +97,6 @@ export const SingIn: FC = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}>
             Sign In
-          </Button>
-          <Button
-            onClick={handleClick}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
-            Тык
-          </Button>
-          <Button
-            onClick={handleClickLogout}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
-            Выйти
           </Button>
           <Grid container>
             <Grid item xs>
