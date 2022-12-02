@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Action, AnyAction, Dispatch } from 'redux';
 
 import { IFile } from '../components/Disk/FileList/FileList';
-import { setAddFile, setFiles } from '../redux/file/slice';
+import { setAddFile, setDeleteFile, setFiles } from '../redux/file/slice';
 
 export function getFiles(dirId: string) {
   return async (dispatch: Dispatch<Action>) => {
@@ -58,20 +58,37 @@ export function uploadFile(file: any, dirId: string) {
   };
 }
 
-export async function downloadFile(file: IFile) {
-  const response = await fetch(`http://localhost:5000/api/files/download?id=${file._id}`,{
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
+export function deleteFile(file: IFile) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/files?id=${file._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log(file);
+      dispatch(setDeleteFile(file._id));
+      alert(response.data.message);
+    } catch (error: any) {
+      alert('Нельзя удалить папку в которой другая папка');
     }
+  };
+}
+
+export async function downloadFile(file: IFile) {
+  const response = await fetch(`http://localhost:5000/api/files/download?id=${file._id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   });
   if (response.status === 200) {
-    const blob = await response.blob()
-    const downloadUrl = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = downloadUrl
-    link.download = file.name
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 }

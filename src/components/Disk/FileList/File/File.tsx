@@ -8,13 +8,13 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 import { IFile } from '../FileList';
 import { setCurrentDir, setPushToStack } from '../../../../redux/file/slice';
-import { downloadFile } from '../../../../actions/file';
+import { deleteFile, downloadFile } from '../../../../actions/file';
+import { AppDispatchType } from '../../../../pages/SingIn';
 
 export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __v, _id }) => {
   const dispatch = useDispatch();
   const currentDir = useSelector((state: any) => state.files.currentDir);
   const file: IFile = { name, type, size, path, date, user, childs, __v, _id, currentDir };
-  console.log(file);
 
   const openDirHandler = () => {
     if (type === 'dir') {
@@ -25,6 +25,12 @@ export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __
   const downloadClickHandler = (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
     downloadFile(file);
+  };
+
+  const deleteClickHandler = (e: React.MouseEvent<SVGSVGElement>) => {
+    e.stopPropagation();
+    // @ts-ignore
+    dispatch(deleteFile(file));
   };
 
   return (
@@ -54,7 +60,11 @@ export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __
         )}
       </Grid>
       <Grid sx={{ textAlign: 'center' }} xs={1}>
-        <DeleteIcon color="primary" sx={{ height: 50, width: 50 }} />
+        <DeleteIcon
+          onClick={(e) => deleteClickHandler(e)}
+          color="primary"
+          sx={{ height: 50, width: 50 }}
+        />
       </Grid>
       <Grid sx={{ textAlign: 'center' }} xs={1}>
         {date.slice(0, 10)}
