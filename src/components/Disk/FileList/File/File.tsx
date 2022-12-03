@@ -53,7 +53,13 @@ export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __
           <CloudDownloadIcon
             onClick={(e) => downloadClickHandler(e)}
             color="primary"
-            sx={{ height: 50, width: 50 }}
+            sx={{
+              height: 50,
+              width: 50,
+              '&:hover': {
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}
           />
         ) : (
           ''
@@ -63,7 +69,13 @@ export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __
         <DeleteIcon
           onClick={(e) => deleteClickHandler(e)}
           color="primary"
-          sx={{ height: 50, width: 50 }}
+          sx={{
+            height: 50,
+            width: 50,
+            '&:hover': {
+              opacity: [0.9, 0.8, 0.7],
+            },
+          }}
         />
       </Grid>
       <Grid sx={{ textAlign: 'center' }} xs={1}>

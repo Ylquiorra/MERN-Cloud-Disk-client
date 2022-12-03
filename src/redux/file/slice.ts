@@ -43,9 +43,7 @@ export default function fileReducer(state = defaultState, action: { type: any; p
     case DELETE_FILE:
       return {
         ...state,
-        files: [
-          ...state.files.filter((file) => file._id !== action.payload, console.log(action.payload)),
-        ],
+        files: [...state.files.filter((file) => file._id !== action.payload)],
       };
     default:
       return state;

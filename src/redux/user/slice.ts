@@ -6,7 +6,6 @@ export interface IdefaultState {
   email: String;
   diskSpace: Number;
   usedSpace: Number;
-  avatart: String;
 }
 
 const defaultState = {

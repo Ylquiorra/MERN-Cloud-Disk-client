@@ -7,6 +7,7 @@ import { getFiles, uploadFile } from '../../actions/file';
 import FileList, { IFile } from './FileList/FileList';
 import Popup from './Popup/Popup';
 import { setCurrentDir, setPopupDisplay } from '../../redux/file/slice';
+import Uploader from './Uploader/Uploader';
 
 const Disk: FC = () => {
   const [dragEnter, setDragEnter] = React.useState(false);
@@ -70,6 +71,7 @@ const Disk: FC = () => {
           <input multiple={true} onChange={(e) => fileUploadHandler(e)} type="file" hidden />
         </Button>
         <Popup />
+        <Uploader />
       </Box>
       <FileList />
     </section>
@@ -90,7 +92,7 @@ const Disk: FC = () => {
           alignItems: 'center',
         }}>
         <Typography id="modal-modal-title" variant="h4" component="h2">
-          Перетащите файлы в область 
+          Перетащите файлы в область
         </Typography>
         <CloudUploadIcon sx={{ height: 50, width: 50 }} />
       </Box>

@@ -3,6 +3,7 @@ import { Action, AnyAction, Dispatch } from 'redux';
 
 import { IFile } from '../components/Disk/FileList/FileList';
 import { setAddFile, setDeleteFile, setFiles } from '../redux/file/slice';
+import { setAddUploadFile, setChangeUploadFile, setShowUploader } from '../redux/upload/slice';
 
 export function getFiles(dirId: string) {
   return async (dispatch: Dispatch<Action>) => {
@@ -48,8 +49,17 @@ export function uploadFile(file: any, dirId: string) {
       if (dirId) {
         formData.append('parent', dirId);
       }
+      const uploadFile = { name: file.name, progress: 0, id: Date.now() };
+      dispatch(setShowUploader());
+      //@ts-ignore
+      dispatch(setAddUploadFile(uploadFile));
       const response = await axios.post(`http://localhost:5000/api/files/upload`, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        onUploadProgress: (progressEvent: any) => {
+          uploadFile.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          //@ts-ignore
+          dispatch(setChangeUploadFile(uploadFile));
+        },
       });
       dispatch(setAddFile(response.data));
     } catch (error: any) {
