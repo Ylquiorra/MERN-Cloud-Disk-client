@@ -1,23 +1,34 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  NativeSelect,
+  Select,
+  Typography,
+} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import { getFiles, uploadFile } from '../../actions/file';
-import FileList, { IFile } from './FileList/FileList';
+import FileList from './FileList/FileList';
 import Popup from './Popup/Popup';
 import { setCurrentDir, setPopupDisplay } from '../../redux/file/slice';
 import Uploader from './Uploader/Uploader';
 
 const Disk: FC = () => {
   const [dragEnter, setDragEnter] = React.useState(false);
+  const [sort, setSort] = React.useState('name');
+
   const dispatch: any = useDispatch();
   const currentDir = useSelector((state: any) => state.files.currentDir);
   const dirStack = useSelector((state: any) => state.files.dirStack);
 
   React.useEffect(() => {
-    dispatch(getFiles(currentDir));
-  }, [currentDir]);
+    dispatch(getFiles(currentDir, sort));
+  }, [currentDir, sort]);
 
   const showPopup = () => {
     dispatch(setPopupDisplay(true));
@@ -66,12 +77,22 @@ const Disk: FC = () => {
         <Button onClick={showPopup} sx={{ mr: 3 }} variant="contained">
           Создать папку
         </Button>
-        <Button color="secondary" variant="outlined" component="label">
+        <Button sx={{ mr: 5 }} color="secondary" variant="outlined" component="label">
           Загрузить файл
           <input multiple={true} onChange={(e) => fileUploadHandler(e)} type="file" hidden />
         </Button>
         <Popup />
         <Uploader />
+        <FormControl>
+          <InputLabel variant="standard" htmlFor="uncontrolled-native">
+            Сортировка
+          </InputLabel>
+          <NativeSelect onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
+            <option value="name">По имени</option>
+            <option value="type">По типу</option>
+            <option value="date">По дате</option>
+          </NativeSelect>
+        </FormControl>
       </Box>
       <FileList />
     </section>

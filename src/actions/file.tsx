@@ -5,14 +5,23 @@ import { IFile } from '../components/Disk/FileList/FileList';
 import { setAddFile, setDeleteFile, setFiles } from '../redux/file/slice';
 import { setAddUploadFile, setChangeUploadFile, setShowUploader } from '../redux/upload/slice';
 
-export function getFiles(dirId: string) {
+export function getFiles(dirId: string, sort: string) {
   return async (dispatch: Dispatch<Action>) => {
     try {
+      let url = `http://localhost:5000/api/files`;
+      if (dirId) {
+        url = `http://localhost:5000/api/files?parent=${dirId}`;
+      }
+      if (sort) {
+        url = `http://localhost:5000/api/files?sort=${sort}`;
+      }
+      if (dirId && sort) {
+        url = `http://localhost:5000/api/files?parent=${dirId}&sort=${sort}`;
+      }
       //TODO нужно всписать тип, что получает
-      const { data } = await axios.get(
-        `http://localhost:5000/api/files${dirId ? '?parent=' + dirId : ''}`,
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } },
-      );
+      const { data } = await axios.get(url, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
       dispatch(setFiles(data));
     } catch (error: any) {
       alert(error.message);

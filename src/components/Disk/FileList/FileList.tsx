@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 import { Box, Grid } from '@mui/material';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { useSelector } from 'react-redux';
 import { File } from './File/File';
+import './fileList.css';
 
 export interface IFile {
   _id: string;
@@ -36,9 +38,13 @@ const FileList: FC = () => {
           Размер
         </Grid>
       </Grid>
-      {files.map((file) => (
-        <File key={file._id} {...file} />
-      ))}
+      <TransitionGroup>
+        {files.map((file) => (
+          <CSSTransition key={file._id} timeout={500} classNames={'file'} exit={false}>
+            <File key={file._id} {...file} />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </Box>
   );
 };

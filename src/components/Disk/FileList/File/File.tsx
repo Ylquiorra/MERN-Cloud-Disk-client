@@ -10,6 +10,7 @@ import { IFile } from '../FileList';
 import { setCurrentDir, setPushToStack } from '../../../../redux/file/slice';
 import { deleteFile, downloadFile } from '../../../../actions/file';
 import { AppDispatchType } from '../../../../pages/SingIn';
+import sizeFormat from '../../../../utils/sizeFormat';
 
 export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __v, _id }) => {
   const dispatch = useDispatch();
@@ -82,7 +83,7 @@ export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __
         {date.slice(0, 10)}
       </Grid>
       <Grid sx={{ textAlign: 'center' }} xs={1}>
-        {size}
+        {sizeFormat(size)}
       </Grid>
     </Grid>
   );
