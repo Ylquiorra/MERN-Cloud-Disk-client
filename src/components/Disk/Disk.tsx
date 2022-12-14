@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   InputLabel,
-  MenuItem,
   NativeSelect,
-  Select,
+  TextField,
   Typography,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-import { getFiles, uploadFile } from '../../actions/file';
+import { getFiles, searchFiles, uploadFile } from '../../actions/file';
 import FileList from './FileList/FileList';
 import Popup from './Popup/Popup';
 import { setCurrentDir, setPopupDisplay } from '../../redux/file/slice';
@@ -21,10 +21,13 @@ import Uploader from './Uploader/Uploader';
 const Disk: FC = () => {
   const [dragEnter, setDragEnter] = React.useState(false);
   const [sort, setSort] = React.useState('name');
+  const [searchName, setSearchName] = React.useState('');
+  const [searchTimeout, setSearchTimeout] = React.useState(false);
 
   const dispatch: any = useDispatch();
   const currentDir = useSelector((state: any) => state.files.currentDir);
   const dirStack = useSelector((state: any) => state.files.dirStack);
+  const loader = useSelector((state: any) => state.app.loader);
 
   React.useEffect(() => {
     dispatch(getFiles(currentDir, sort));
@@ -62,6 +65,39 @@ const Disk: FC = () => {
     setDragEnter(false);
   };
 
+  const searchChangeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSearchName(e.target.value);
+    if (searchTimeout !== false) {
+      //@ts-ignore
+      clearTimeout(searchTimeout);
+    }
+    if (e.target.value !== '') {
+      setSearchTimeout(
+        //@ts-ignore
+        setTimeout(
+          (value: string) => {
+            dispatch(searchFiles(value));
+          },
+          500,
+          e.target.value,
+        ),
+      );
+    } else {
+      //@ts-ignore
+      dispatch(getFiles(currentDir));
+    }
+  };
+
+  if (loader) {
+    return (
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}
+        className="loader">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return !dragEnter ? (
     <section
       onDragEnter={dragEnterHandler}
@@ -83,7 +119,7 @@ const Disk: FC = () => {
         </Button>
         <Popup />
         <Uploader />
-        <FormControl>
+        <FormControl sx={{ marginRight: 5 }}>
           <InputLabel variant="standard" htmlFor="uncontrolled-native">
             Сортировка
           </InputLabel>
@@ -93,6 +129,12 @@ const Disk: FC = () => {
             <option value="date">По дате</option>
           </NativeSelect>
         </FormControl>
+        <TextField
+          value={searchName}
+          onChange={(e) => searchChangeHandler(e)}
+          id="outlined-name"
+          label="Введите, чтобы найти"
+        />
       </Box>
       <FileList />
     </section>

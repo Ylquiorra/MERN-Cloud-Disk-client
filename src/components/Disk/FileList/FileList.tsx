@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { useSelector } from 'react-redux';
@@ -21,6 +21,16 @@ export interface IFile {
 
 const FileList: FC = () => {
   const files: IFile[] = useSelector((state: any) => state.files.files);
+
+  if (files.length === 0) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+        <Typography component="h4" variant="h5">
+          Папка пуста
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ flexGrow: 1, mb: 6 }}>

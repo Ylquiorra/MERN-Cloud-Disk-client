@@ -85,7 +85,6 @@ export function deleteFile(file: IFile) {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log(file);
       dispatch(setDeleteFile(file._id));
       alert(response.data.message);
     } catch (error: any) {
@@ -110,4 +109,19 @@ export async function downloadFile(file: IFile) {
     link.click();
     link.remove();
   }
+}
+
+export function searchFiles(search: string) {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/files/search?search=${search}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      dispatch(setFiles(response.data));
+    } catch (error: any) {
+      alert('Не получилось найти файл');
+    }
+  };
 }
