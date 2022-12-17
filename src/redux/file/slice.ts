@@ -1,16 +1,19 @@
 import { IFile } from '../../components/Disk/FileList/FileList';
+
 const SET_FILES = 'SET_FILES';
 const SET_CURRENT_DIR = 'SET_CURRENT_DIR';
 const ADD_FILE = 'ADD_FILE';
 const SET_POPUP_DISPLAY = 'SET_POPUP_DISPLAY';
 const PUSH_TO_STACK = 'PUSH_TO_STACK';
 const DELETE_FILE = 'DELETE_FILE';
+const SET_VIEW = 'SET_VIEW';
 
 interface FileSliceState {
   files: IFile[];
   currentDir: string | null;
   popupDisplay: boolean;
   dirStack: IFile[];
+  view: string;
 }
 
 // interface defaultStateType = {
@@ -26,6 +29,7 @@ const defaultState: FileSliceState = {
   currentDir: null,
   popupDisplay: false,
   dirStack: [],
+  view: 'list',
 };
 
 export default function fileReducer(state = defaultState, action: { type: any; payload: any }) {
@@ -45,6 +49,8 @@ export default function fileReducer(state = defaultState, action: { type: any; p
         ...state,
         files: [...state.files.filter((file) => file._id !== action.payload)],
       };
+    case SET_VIEW:
+      return { ...state, view: action.payload };
     default:
       return state;
   }
@@ -59,3 +65,4 @@ export const setPopupDisplay = (display: boolean) => ({
 });
 export const setPushToStack = (dir: IFile) => ({ type: PUSH_TO_STACK, payload: dir });
 export const setDeleteFile = (dirId: string) => ({ type: DELETE_FILE, payload: dirId });
+export const setFilesView = (payload: string) => ({ type: SET_VIEW, payload });

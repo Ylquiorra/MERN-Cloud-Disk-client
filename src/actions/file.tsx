@@ -2,21 +2,22 @@ import axios from 'axios';
 import { Action, AnyAction, Dispatch } from 'redux';
 
 import { IFile } from '../components/Disk/FileList/FileList';
+import { API_URL } from '../config';
 import { setAddFile, setDeleteFile, setFiles } from '../redux/file/slice';
 import { setAddUploadFile, setChangeUploadFile, setShowUploader } from '../redux/upload/slice';
 
 export function getFiles(dirId: string, sort: string) {
   return async (dispatch: Dispatch<Action>) => {
     try {
-      let url = `http://localhost:5000/api/files`;
+      let url = `${API_URL}api/files`;
       if (dirId) {
-        url = `http://localhost:5000/api/files?parent=${dirId}`;
+        url = `${API_URL}api/files?parent=${dirId}`;
       }
       if (sort) {
-        url = `http://localhost:5000/api/files?sort=${sort}`;
+        url = `${API_URL}api/files?sort=${sort}`;
       }
       if (dirId && sort) {
-        url = `http://localhost:5000/api/files?parent=${dirId}&sort=${sort}`;
+        url = `${API_URL}api/files?parent=${dirId}&sort=${sort}`;
       }
       //TODO нужно всписать тип, что получает
       const { data } = await axios.get(url, {
@@ -33,7 +34,7 @@ export function createDir(dirId: string, name: string) {
   return async (dispatch: Dispatch<AnyAction>) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/files`,
+        `${API_URL}api/files`,
         {
           name,
           parent: dirId,
@@ -62,7 +63,7 @@ export function uploadFile(file: any, dirId: string) {
       dispatch(setShowUploader());
       //@ts-ignore
       dispatch(setAddUploadFile(uploadFile));
-      const response = await axios.post(`http://localhost:5000/api/files/upload`, formData, {
+      const response = await axios.post(`${API_URL}api/files/upload`, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         onUploadProgress: (progressEvent: any) => {
           uploadFile.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
@@ -80,7 +81,7 @@ export function uploadFile(file: any, dirId: string) {
 export function deleteFile(file: IFile) {
   return async (dispatch: Dispatch<AnyAction>) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/files?id=${file._id}`, {
+      const response = await axios.delete(`${API_URL}api/files?id=${file._id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -94,7 +95,7 @@ export function deleteFile(file: IFile) {
 }
 
 export async function downloadFile(file: IFile) {
-  const response = await fetch(`http://localhost:5000/api/files/download?id=${file._id}`, {
+  const response = await fetch(`${API_URL}api/files/download?id=${file._id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -114,7 +115,7 @@ export async function downloadFile(file: IFile) {
 export function searchFiles(search: string) {
   return async (dispatch: Dispatch<AnyAction>) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/files/search?search=${search}`, {
+      const response = await axios.get(`${API_URL}api/files/search?search=${search}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

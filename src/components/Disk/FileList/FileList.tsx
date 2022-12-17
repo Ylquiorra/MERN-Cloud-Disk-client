@@ -18,9 +18,10 @@ export interface IFile {
   __v: number;
   currentDir: string | null;
 }
-
+//@ts-ignore
 const FileList: FC = () => {
   const files: IFile[] = useSelector((state: any) => state.files.files);
+  const fileView: string = useSelector((state: any) => state.files.view);
 
   if (files.length === 0) {
     return (
@@ -32,31 +33,44 @@ const FileList: FC = () => {
     );
   }
 
-  return (
-    <Box sx={{ flexGrow: 1, mb: 6 }}>
-      <Grid container spacing={2} sx={{ mb: 6 }}>
-        <Grid xs={1}></Grid>
-        <Grid sx={{ fontWeight: '600', fontSize: 20 }} xs>
-          Название
+  if (fileView === 'list') {
+    return (
+      <Box sx={{ flexGrow: 1, mb: 6 }}>
+        <Grid container spacing={2} sx={{ mb: 6 }}>
+          <Grid xs={1}></Grid>
+          <Grid sx={{ fontWeight: '600', fontSize: 20 }} xs>
+            Название
+          </Grid>
+          <Grid xs={1}></Grid>
+          <Grid xs={1}></Grid>
+          <Grid sx={{ textAlign: 'center', fontWeight: '600', fontSize: 20 }} xs={1}>
+            Дата
+          </Grid>
+          <Grid sx={{ textAlign: 'center', fontWeight: '600', fontSize: 20 }} xs={1}>
+            Размер
+          </Grid>
         </Grid>
-        <Grid xs={1}></Grid>
-        <Grid xs={1}></Grid>
-        <Grid sx={{ textAlign: 'center', fontWeight: '600', fontSize: 20 }} xs={1}>
-          Дата
-        </Grid>
-        <Grid sx={{ textAlign: 'center', fontWeight: '600', fontSize: 20 }} xs={1}>
-          Размер
-        </Grid>
-      </Grid>
-      <TransitionGroup>
+        <TransitionGroup>
+          {files.map((file) => (
+            <CSSTransition key={file._id} timeout={500} classNames={'file'} exit={false}>
+              <File {...file} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </Box>
+    );
+  }
+  if (fileView === 'plate') {
+    return (
+      <Box sx={{ display: 'flex', mb: 6, flexWrap: 'wrap', rowGap: 4 }}>
         {files.map((file) => (
           <CSSTransition key={file._id} timeout={500} classNames={'file'} exit={false}>
-            <File key={file._id} {...file} />
+            <File {...file} />
           </CSSTransition>
         ))}
-      </TransitionGroup>
-    </Box>
-  );
+      </Box>
+    );
+  }
 };
 
 export default FileList;

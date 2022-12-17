@@ -11,11 +11,13 @@ import {
   Typography,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
+import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
 
 import { getFiles, searchFiles, uploadFile } from '../../actions/file';
 import FileList from './FileList/FileList';
 import Popup from './Popup/Popup';
-import { setCurrentDir, setPopupDisplay } from '../../redux/file/slice';
+import { setCurrentDir, setFilesView, setPopupDisplay } from '../../redux/file/slice';
 import Uploader from './Uploader/Uploader';
 
 const Disk: FC = () => {
@@ -104,37 +106,55 @@ const Disk: FC = () => {
       onDragLeave={dragLeaveHandler}
       onDragOver={dragEnterHandler}
       className="disk">
-      <Box sx={{ flexGrow: 1, mb: 9 }}>
-        {currentDir && (
-          <Button onClick={backClickHandler} sx={{ mr: 3 }} variant="outlined">
-            Назад
+      <Box
+        sx={{
+          display: 'dlex',
+          alingItems: 'center',
+          justifyContent: 'space-between',
+          mb: 9,
+        }}>
+        <Box>
+          {currentDir && (
+            <Button onClick={backClickHandler} sx={{ mr: 3 }} variant="outlined">
+              Назад
+            </Button>
+          )}
+          <Button onClick={showPopup} sx={{ mr: 3 }} variant="contained">
+            Создать папку
           </Button>
-        )}
-        <Button onClick={showPopup} sx={{ mr: 3 }} variant="contained">
-          Создать папку
-        </Button>
-        <Button sx={{ mr: 5 }} color="secondary" variant="outlined" component="label">
-          Загрузить файл
-          <input multiple={true} onChange={(e) => fileUploadHandler(e)} type="file" hidden />
-        </Button>
-        <Popup />
-        <Uploader />
-        <FormControl sx={{ marginRight: 5 }}>
-          <InputLabel variant="standard" htmlFor="uncontrolled-native">
-            Сортировка
-          </InputLabel>
-          <NativeSelect onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
-            <option value="name">По имени</option>
-            <option value="type">По типу</option>
-            <option value="date">По дате</option>
-          </NativeSelect>
-        </FormControl>
-        <TextField
-          value={searchName}
-          onChange={(e) => searchChangeHandler(e)}
-          id="outlined-name"
-          label="Введите, чтобы найти"
-        />
+          <Button sx={{ mr: 5 }} color="secondary" variant="outlined" component="label">
+            Загрузить файл
+            <input multiple={true} onChange={(e) => fileUploadHandler(e)} type="file" hidden />
+          </Button>
+          <Popup />
+          <Uploader />
+          <FormControl sx={{ marginRight: 5 }}>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Сортировка
+            </InputLabel>
+            <NativeSelect onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
+              <option value="name">По имени</option>
+              <option value="type">По типу</option>
+              <option value="date">По дате</option>
+            </NativeSelect>
+          </FormControl>
+          <TextField
+            value={searchName}
+            onChange={(e) => searchChangeHandler(e)}
+            id="outlined-name"
+            label="Введите, чтобы найти"
+          />
+        </Box>
+        <Box>
+          <GridViewOutlinedIcon
+            sx={{ width: 36, height: 36, mr: 4, cursor: 'pointer' }}
+            onClick={() => dispatch(setFilesView('plate'))}
+          />
+          <ListOutlinedIcon
+            sx={{ width: 36, height: 36, cursor: 'pointer' }}
+            onClick={() => dispatch(setFilesView('list'))}
+          />
+        </Box>
       </Box>
       <FileList />
     </section>
