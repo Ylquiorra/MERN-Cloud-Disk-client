@@ -3,6 +3,8 @@ const LOGOUT = 'LOGOUT';
 
 export interface IdefaultState {
   id: Number;
+  firstName: String;
+  lastName: String;
   email: String;
   diskSpace: Number;
   usedSpace: Number;

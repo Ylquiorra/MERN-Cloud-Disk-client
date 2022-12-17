@@ -1,14 +1,20 @@
 import axios from 'axios';
-import { format } from 'path';
 import { IFile } from '../components/Disk/FileList/FileList';
 
 import { API_URL } from '../config';
 import { AppDispatchType } from '../pages/SingIn';
 import { setUser } from '../redux/user/slice';
 
-export const registration = async (email: string, password: string) => {
+export const registration = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+) => {
   try {
     const response = await axios.post(`${API_URL}api/auth/registration`, {
+      firstName,
+      lastName,
       email,
       password,
     });

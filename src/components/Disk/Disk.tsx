@@ -19,6 +19,7 @@ import FileList from './FileList/FileList';
 import Popup from './Popup/Popup';
 import { setCurrentDir, setFilesView, setPopupDisplay } from '../../redux/file/slice';
 import Uploader from './Uploader/Uploader';
+import UsedStorage from './UsedStorage/UsedStorage';
 
 const Disk: FC = () => {
   const [dragEnter, setDragEnter] = React.useState(false);
@@ -139,11 +140,13 @@ const Disk: FC = () => {
             </NativeSelect>
           </FormControl>
           <TextField
+            sx={{ mb: 3 }}
             value={searchName}
             onChange={(e) => searchChangeHandler(e)}
             id="outlined-name"
             label="Введите, чтобы найти"
           />
+          <UsedStorage />
         </Box>
         <Box>
           <GridViewOutlinedIcon

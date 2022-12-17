@@ -137,26 +137,6 @@ export const File: FC<IFile> = ({ name, type, size, path, date, user, childs, __
           />
         </Box>
       </Box>
-
-      // <Grid
-      //   container
-
-      //   spacing={2}
-      //   alignItems="center"
-      //   sx={{ mb: 5, borderBottom: 1, borderColor: 'grey.500', cursor: 'pointer' }}>
-      //   <Grid sx={{ textAlign: 'center' }} xs={1}>
-
-      //   </Grid>
-      //   <Grid xs>{name}</Grid>
-      //   <Box>
-      //     <Grid sx={{ textAlign: 'center' }} xs={1}>
-
-      //     </Grid>
-      //     <Grid sx={{ textAlign: 'center' }} xs={1}>
-
-      //     </Grid>
-      //   </Box>
-      // </Grid>
     );
   }
 };

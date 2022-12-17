@@ -15,6 +15,8 @@ import Container from '@mui/material/Container';
 import { registration } from '../actions/user';
 
 export const SingUp: FC = () => {
+  const [firstName, setFirstName] = React.useState<string>('');
+  const [lastName, setLastName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
@@ -22,6 +24,8 @@ export const SingUp: FC = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
     });
@@ -49,6 +53,7 @@ export const SingUp: FC = () => {
                 autoComplete="given-name"
                 name="firstName"
                 required
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
                 fullWidth
                 id="firstName"
                 label="First Name"
@@ -58,6 +63,7 @@ export const SingUp: FC = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
                 fullWidth
                 id="lastName"
                 label="Last Name"
@@ -98,7 +104,7 @@ export const SingUp: FC = () => {
             </Grid>
           </Grid>
           <Button
-            onClick={() => registration(email, password)}
+            onClick={() => registration(firstName, lastName, email, password)}
             type="submit"
             fullWidth
             variant="contained"
